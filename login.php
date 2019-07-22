@@ -26,3 +26,7 @@
   </div>
   <?php } ?>
 </form>
+
+<?php
+    include_once('footer.php');
+?>
