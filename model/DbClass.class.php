@@ -92,5 +92,46 @@ class DbClass extends dbconnect
 
         return $result;
     } 
+
+    /**
+     * login user witht he given credentials
+     * @param string $emailId
+     * @param string $password
+     *
+     * @return boolean
+     */
+    public function login(string $emailId, string $password) : bool
+    {
+        $pwd = md5($password);
+        $result = mysqli_query($this->connection, "SELECT * FROM user WHERE email = '".$emailId."' AND password = '".$pwd."'");
+        $user_exists = mysqli_num_rows($result);	
+
+        if($user_exists>=1) {
+            $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            $_SESSION['id_user'] = $user["id"];
+
+			return true;
+        }
+
+        return false;
+    }
+
+    /**
+     *  userExists check the given email id is already there
+     * @param string $emailId
+     *
+     * @return boolean
+     */
+    public function userExists(string $emailId) : bool
+    {
+        $result = mysqli_query($this->connection, "SELECT * FROM user WHERE email = '".$emailId."'");
+        $user_exists = mysqli_num_rows($result);	
+
+        if($user_exists>=1) {
+			return true;
+        }
+
+        return false;
+    }
 }
 ?>
